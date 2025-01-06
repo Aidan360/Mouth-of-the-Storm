@@ -82,5 +82,5 @@
         lastPosition[3] = motorRightAvg;
         lastHeading = heading;
         position[2] = pros::c::imu_get_heading(IMUPort); 
-}
     }
+}

@@ -8,12 +8,13 @@
 #define intake_PORT 7 // Torque
 #define wallMech_PORT 8 // Torque 
 #define expander_PORT 11 // extender for other sensors
-#define imu_PORT 20 // Port for Temporary IMU 
-#define color_PORT 12 // Color sensor 
+#define imu_PORT 11 // Port for Temporary IMU 
+#define color_PORT 20 // Color sensor 
 
 #define pto_PORT 'a'
 #define clawRelease_PORT 'b'
-#define goalMech_PORT 'c'
+#define goalMech_PORT 'a'
+#define intakeSensor_PORT 'd'
 
 extern double sgn(double x);
 extern double abso(double x);

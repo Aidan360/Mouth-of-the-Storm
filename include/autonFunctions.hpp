@@ -4,23 +4,23 @@
 #include <vector>
  
  
- class pid { 
+ class PIDC { 
     public:
 
-        float rpm; 
-        float wheelSize; //radius 
+        float rpm = 450; 
+        float wheelSize = 1.75*M_PI; //radius 
         char IMUPort = imu_PORT; 
         public: 
         // tPID is turning PID values fPID is back and forward PID values
-        float tP; 
-        float tI;
-        float tD;
-        float fP;
-        float fI;
-        float fD; 
-        float forwardTolerence;
-        float turnTolerence;
-        int counter;
+        float tP = 0; 
+        float tI = 0;
+        float tD = 0;
+        float fP = 0;
+        float fI = 0;
+        float fD = 0; 
+        float forwardTolerence = 0.5;
+        float turnTolerence = 0.5;
+        int counter = 100;
         void move(float inch);
         void turn(float degree);
         void turnHeading(float heading);      
@@ -72,3 +72,6 @@ class odom {
         int lastPursuitIndex;
         float velVol = 600/rpm;
     }; 
+
+
+extern PIDC dt; 
