@@ -1,3 +1,4 @@
+#include "display/lv_objx/lv_ta.h"
 #include "main.h"
 #include "autonFunctions.hpp"
 #include "pros/rtos.hpp"
@@ -6,24 +7,133 @@ PIDC dt;
 void autonomous() { 
     pros::ADIDigitalOut goalMech (goalMech_PORT);
     pros::Motor wallMech(wallMech_PORT); 
+      pros::ADIDigitalOut climb(clawRelease_PORT); 
     pros::Motor intake(intake_PORT);
     dt.fP = 15;
-    dt.fI = 0.025;
+    dt.fI = 0.035;
     dt.fD = 0.05;
     dt.forwardTolerence = 10;
     dt.turnTolerence = 1;
-    dt.tP = 70; 
-    dt.tI = 0.0015;
-    dt.tD = 0.275;
-    pros::c::imu_reset_blocking(imu_PORT);
-    pros::c::imu_set_heading(imu_PORT, 170);
+    dt.tP = 80; 
+    dt.tI = 0.01;
+    dt.tD = 0.5;
+
+//skills  
+/*
+pros::c::imu_set_heading(imu_PORT, 170);
+dt.move(-18);
+goalMech.set_value(true);
+dt.turn(260);
+intake.move(127);
+dt.move(40);
+dt.turn(350);
+dt.move(-18);
+goalMech.set_value(false);
+dt.move(18); */
+                                                                 // RED 
+    // GOAL RUSH 
+    
+    pros::c::imu_set_heading(imu_PORT, 80);
+      dt.move(9);
+      dt.turn(170);
+      dt.move(10);
+      wallMech.move_absolute(500, 200);
+      pros::delay(1000);
+      wallMech.move_absolute(0,200);
+        pros::delay(1000); 
+      /*
+      dt.move(-14);
+      pros::delay(500);
+      dt.turn(130);
+  dt.move(-20);  */ //move back to grab goal  
+/* revised ring rush*/
+/*
+pros::c::imu_set_heading(imu_PORT, 80);
+  drive(9,200);
+  turn(170);
+  drive(10,200);
+  wallMech.move_absolute(-500, 200);
+  pros::delay(1000);
+  wallMech.move_absolute(0,200);
+  pros::delay(1000);
+  drive(-14,300);
+  turn(130);
+  drive(-20,450); 
+  goalMech.set_value(true);
+  pros::delay(500);
+  turn(260);
+  intake.move(127);
+  drive(26,200);
+  pros::delay(250);
+  drive(-6,200);
+  turn(80);
+  drive(36,450); */
+
+
+  /*
+    pros::delay(250); 
+    goalMech.set_value(true); // grab goal 
+         pros::delay(250); 
+    dt.turn(260); // turn towards ring 
+    intake.move(127); 
+    dt.move(26); 
+    pros::delay(250); 
+    dt.move(-6);
+    dt.turn(80);
+    dt.move(36);  */   
+    // GOAL RUSH  
+
+    
+
+
+                                                              // BLUE
+          // RING RUSH 
+   
+   /*   pros::c::imu_set_heading(imu_PORT, 235);
+      dt.move(8);
+
+      wallMech.move_absolute(-270, 100);
+      pros::delay(250);
+      dt.move(-20);
+      dt.turn(190);
+  dt.move(-24); // move back to grab goal 
+    pros::delay(250); 
+    goalMech.set_value(true); // grab goal 
+         pros::delay(250); 
+    dt.turn(100); // turn towards ring 
+    intake.move(127); 
+    dt.move(26); 
+    pros::delay(250); 
+    dt.move(-6);
+    dt.turn(280);
+    dt.move(36); */
+
+
+    /* 
+    dt.turn(10); 
+    dt.move(14);
+    pros::delay(500);
+    dt.move(-6);
+    dt.turn(145+15);
+    dt.move(38);
+    climb.set_value(true);
+    dt.turn(10);
+    */
+
+    
+ /*   dt.turn(10+45);
+    dt.move(6);
+    pros::delay(250); 
+    dt.move(-6); 
+    pros::delay(500);    
+    intake.move(0);  */
 /*    dt.move(-36);
     goalMech.set_value(true);
     dt.move(12);
     intake.move_velocity(400); */
    
-   
-   /* dt.move(12);
+   /*
+    dt.move(12);
     pros::delay(500);
     dt.move(12);
     pros::delay(500);
@@ -44,32 +154,34 @@ void autonomous() {
     dt.move(-18);
     pros::delay(500); */
     
- /*   dt.turn(90);
-    pros::delay(250);
+  /*
+  pros::c::imu_set_heading(imu_PORT, 180);
+  dt.turn(90);
+    pros::delay(500);
     dt.turn(180);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(270);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(90);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(270);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(225);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(180);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(135);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(90);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(225);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(270);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(135);
-    pros::delay(250);
+    pros::delay(500);
     dt.turn(90);
-    pros::delay(250); */
+    pros::delay(500);  */
     
     //    dt.turn(270);
     //    pros::delay(500);

@@ -27,12 +27,12 @@ void initialize() {
     pros::Motor wallMech(wallMech_PORT);
     pros::Optical color(color_PORT);
 
-      leftFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    /*  leftFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
       leftMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
       leftBackMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
       rightFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
       rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);  */
 
     PIDC dt;
     dt.rpm = 450;
@@ -42,4 +42,5 @@ void initialize() {
     motorPortRight.push_back(rightFrontMotor_PORT);
     motorPortRight.push_back(rightMiddleMotor_PORT);
     motorPortRight.push_back(rightBackMotor_PORT); 
+        pros::c::imu_reset_blocking(imu_PORT);
 }

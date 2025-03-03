@@ -19,8 +19,8 @@
         float fI = 0;
         float fD = 0; 
         float forwardTolerence = 0.5;
-        float turnTolerence = 0.5;
-        int counter = 100;
+        float turnTolerence = 1;
+        int counter = 50;
         void move(float inch);
         void turn(float degree);
         void turnHeading(float heading);      
@@ -74,4 +74,6 @@ class odom {
     }; 
 
 
-extern PIDC dt; 
+extern PIDC dt;
+extern void drive(float inches, float velocity); // velocity in 0-450 
+extern void turn(float degrees); // velocity in 0-450, absoulute velocity 

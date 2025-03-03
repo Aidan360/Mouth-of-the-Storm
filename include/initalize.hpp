@@ -3,12 +3,12 @@
 #define leftMiddleMotor_PORT 2 // Speed
 #define leftBackMotor_PORT 3 // Speed
 #define rightFrontMotor_PORT 4 // Speed
-#define rightMiddleMotor_PORT 5 // Speed
+#define rightMiddleMotor_PORT 9 // Speed
 #define rightBackMotor_PORT 6 // Speed
 #define intake_PORT 7 // Torque
 #define wallMech_PORT 8 // Torque 
 #define expander_PORT 11 // extender for other sensors
-#define imu_PORT 11 // Port for Temporary IMU 
+#define imu_PORT 10 // Port for Temporary IMU 
 #define color_PORT 20 // Color sensor 
 
 #define pto_PORT 'a'

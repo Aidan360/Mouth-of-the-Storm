@@ -16,6 +16,27 @@
 	pros::ADIDigitalOut climb (clawRelease_PORT);
 	pros::ADIDigitalIn intakeSensor(intakeSensor_PORT);
 	pros::Optical color(color_PORT);
+/*
+int wallMechSetting = 0;
+float wallMechLoadingDeg = 90;
+float wallMechDoubleDeckerDeg = 500;
+
+void wallMechControl() { 
+	if (wallMechSetting == 0) { 
+		wallMech.move_absolute((wallMechLoadingDeg), 100);
+		wallMechSetting++; 
+	} 
+	if (wallMechSetting == 1) {
+		wallMech.move_absolute((wallMechDoubleDeckerDeg), 100);
+		wallMechSetting = 0; 
+	} 
+}
+
+
+*/
+
+
+
 void disabled() {}
 
 
@@ -27,11 +48,19 @@ void competition_initialize() {}
 	int colorCount = 0;
 	int reverseDelay = 1250;
 	int reverseDelayCount = 0;
-
+	bool drift = false; 
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
+//wallMech.tare_position();
+	wallMech.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	 leftFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+      leftMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+      leftBackMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+      rightFrontMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+      rightMiddleMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	while (true) {
+		
 		float power = -master.get_analog(ANALOG_RIGHT_X)*0.7;
 		float turn = -master.get_analog(ANALOG_LEFT_Y);
 		float left = pow(power + turn,3) *0.0001;
@@ -42,7 +71,6 @@ void opcontrol() {
 		rightFrontMotor.move(left);
 		rightMiddleMotor.move(left);
 		rightBackMotor.move(left);
-		wallMech.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 		//wallMech.move(DIGITAL_R2);
 		//wallMech.move(DIGITAL_R1);
 
@@ -57,6 +85,7 @@ void opcontrol() {
 				goal = false; // robot knows its false
 			}
 		}
+
 		if (master.get_digital_new_press(DIGITAL_B)) {
 			if(climbR == false) {
 				climb.set_value(true);
@@ -68,36 +97,17 @@ void opcontrol() {
 			}
 		}
 		if (master.get_digital(DIGITAL_L1)) {
-			intake.move_velocity(600);
+			intake.move_velocity(-600);
 		}
-		else if ((master.get_digital(DIGITAL_DOWN))) {
-			if (( (color.get_hue() > 55) || (color.get_hue() < 30) )) { // blue is above 55, red is below 30
-				intake.move_velocity(250); // it detects the ring and keeps on going because it is not at the ideal reverse area 
-				colorCount = colorCool; 
-				reverseDelayCount = reverseDelay;
-			}
-
-			else if(colorCount > 0) { 
-				intake.move_velocity(250); // contiunes going until it reaches the top 
-				colorCount = colorCount - 10; // color count acts as a wait before it reverses
-			}
-			else if(reverseDelayCount > 0){
-				intake.move_velocity(-250); // begins reversing 
-				reverseDelayCount = reverseDelayCount - 10; // reversal cooldown
-			}
-			else {
-				intake.move_velocity(250); // nothing is detected but slows for ring detection.
-			}
-	
-			
-		
+		else if (master.get_digital(DIGITAL_L2)){
+			intake.move_velocity(600);
 		}
 		else {
 			intake.move_velocity(0);
 		}
-		if (master.get_digital(DIGITAL_L2)) {
-			intake.move_velocity(-600);
-		}
+
+	
+
 		if (master.get_digital(DIGITAL_R1)) {
 			wallMech.move(127);
 		}
@@ -106,6 +116,16 @@ void opcontrol() {
 		}
 		else {
 			wallMech.move(0);
+		}
+		
+		
+		if (master.get_digital(DIGITAL_LEFT)) {
+		leftFrontMotor.move(600); // Conners Move
+		leftMiddleMotor.move(600);
+		leftBackMotor.move(600);
+		rightFrontMotor.move(600);
+		rightMiddleMotor.move(600);
+		rightBackMotor.move(600);
 		}
 		pros::lcd::print(0, "color: %f\n",color.get_hue());
 		//if (intakeSensor.get_value() == false) { 
@@ -117,6 +137,7 @@ void opcontrol() {
 		//intake.move(-DIGITAL_RIGHT*127);
 
 
-		pros::delay(5);
+		pros::delay(100);
 	}
-}
+	}
+

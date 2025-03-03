@@ -17,7 +17,7 @@ void PIDC::move(float inch){
     
     
     while (abso(error) > forwardTolerence) {
-    error = (-inch/wheelSize)*180 - pros::c::motor_get_position(motorPortLeft[0]) * 0.75; // d/(r*pi) * 180 - encoder * gearratio
+    error = (-inch/wheelSize)*180 - pros::c::motor_get_position(motorPortRight[0]) * 0.75; // d/(r*pi) * 180 - encoder * gearratio
     pros::lcd::print(0, "Odom Value: %d\n",int((error/360)*M_PI*wheelSize*100)); // displays distance away from target
     
     integral = integral + error; // integral of pid function 
@@ -25,15 +25,19 @@ void PIDC::move(float inch){
     
     double output = fP*error + fI*integral + fD*derivative; // voltage output
     for (int i = 0; i < std::size(motorPortLeft); ++i) { // loop for each motor 
-        pros::c::motor_move_voltage(motorPortLeft[i],output); 
-        pros::c::motor_move_voltage(motorPortRight[i],-output);
+        pros::c::motor_move_voltage(motorPortLeft[i],-output); 
+        pros::c::motor_move_voltage(motorPortRight[i],output);
     }
     lastError = error; 
-    if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
+    if (abso(int(pros::c::motor_get_actual_velocity(motorPortLeft[1]))) >= 0.1) {
         count = count++;
     } 
-    if (error == lastError) {
+    if ((abso(error) - abso(lastError) >= 0.1)) {
         count = count++;
+    for (int i = 0; i < std::size(motorPortLeft); ++i) { // loop for each motor 
+        pros::c::motor_move_voltage(motorPortLeft[i],-output-1000*sgn(error)); 
+        pros::c::motor_move_voltage(motorPortRight[i],output+1000*sgn(error));
+    }
     } 
     else {
         count = 0;
@@ -74,12 +78,14 @@ void PIDC::turn(float degree) {
         pros::c::motor_move_voltage(motorPortRight[i],-output);
     }
     lastError = error;
-    if (int(pros::c::motor_get_actual_velocity(motorPortLeft[1])) == 0) {
-        count = count + 1;
-    }
-    else {
-        count = 0;
-    }  
+    if (abso(int(pros::c::motor_get_actual_velocity(motorPortLeft[1]))) >= 0.1) {
+        count = count++;
+    } 
+    if ((abso(error) - abso(lastError) >= 0.1)) {
+        count = count++;
+        pros::c::motor_move_voltage(motorPortLeft[1],-output+5000*sgn(error)); 
+        pros::c::motor_move_voltage(motorPortRight[1],-output+5000*sgn(error));
+    } 
     if (counter < count) {
      break;
     }  
