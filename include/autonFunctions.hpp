@@ -1,8 +1,39 @@
  #include "main.h"
 #include "initalize.hpp"
+#include <ios>
 #include <string>
 #include <vector>
  
+
+
+class CLC {  
+
+    public: 
+    float trackLength;
+    float rpm = 450; 
+    float wheelSize = 1.75*M_PI; //radius 
+    char IMUPort = imu_PORT; 
+    float position[3]; // x,y,heading
+    // tPID is turning PID values fPID is back and forward PID values
+    float lP = 0; 
+    float lI = 0;
+    float lD = 0;
+    float rP = 0;
+    float rI = 0;
+    float rD = 0; 
+    float Tolerence = 0.5;
+    int counter = 50;
+    void left(float inch);
+    void right(float inch);
+    void forward(float inch);
+    void turn(float degrees);
+    void curve(float radius, float degree, bool reverse); // default is left side is normal side 
+    
+private: 
+    float velVol = 600/rpm;
+
+
+};
  
  class PIDC { 
     public:
