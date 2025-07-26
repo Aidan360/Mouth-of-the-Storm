@@ -21,11 +21,13 @@ class CLC {
     float rP = 0;
     float rI = 0;
     float rD = 0; 
+    float lS = 0;
+    float rS = 0;
     float Tolerence = 0.5;
     int counter = 50;
-    void left(float inch);
+    void left(float inch, float rInch);
     void right(float inch);
-    void forward(float inch);
+    void move(float inch);
     void turn(float degrees);
     void curve(float radius, float degree, bool reverse); // default is left side is normal side 
     
@@ -105,6 +107,6 @@ class odom {
     }; 
 
 
-extern PIDC dt;
+extern CLC dt;
 extern void drive(float inches, float velocity); // velocity in 0-450 
 extern void turn(float degrees); // velocity in 0-450, absoulute velocity 

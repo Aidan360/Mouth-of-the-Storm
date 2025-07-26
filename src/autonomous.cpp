@@ -1,22 +1,73 @@
 #include "display/lv_objx/lv_ta.h"
 #include "main.h"
 #include "autonFunctions.hpp"
+#include "pros/imu.h"
+#include "pros/llemu.hpp"
 #include "pros/rtos.hpp"
-PIDC dt;
+CLC dt;
 	
 void autonomous() { 
     pros::ADIDigitalOut goalMech (goalMech_PORT);
     pros::Motor wallMech(wallMech_PORT); 
       pros::ADIDigitalOut climb(clawRelease_PORT); 
     pros::Motor intake(intake_PORT);
+   /*
     dt.fP = 15;
     dt.fI = 0.035;
     dt.fD = 0.05;
-    dt.forwardTolerence = 10;
+    dt.Tolerence = 10;
     dt.turnTolerence = 1;
     dt.tP = 80; 
     dt.tI = 0.01;
     dt.tD = 0.5;
+*/
+
+  dt.lP = 0; 
+  dt.lI = 0; 
+  dt.lD = 0;
+  dt.lS = 1000; 
+  dt.rP = dt.lP;
+  dt.rI = dt.lI;
+  dt.rD = dt.lD;
+  dt.rS = dt.lS;
+  dt.Tolerence = 10;
+
+pros::c::imu_set_heading(imu_PORT, 180);
+
+/*  while (true) { // auton maker
+pros::lcd::print(1, "dist %f", int((pros::c::motor_get_position(2) * (3.25*M_PI / 360))*10));
+  pros::delay(250);
+    pros::lcd::print(0, "Heading %f", pros::c::imu_get_heading(pros::c::imu_tare_heading(imu_PORT)));
+  pros::delay(250);
+  } */
+ 	pros::Motor leftFrontMotor (leftFrontMotor_PORT);
+    pros::Motor leftMiddleMotor (leftMiddleMotor_PORT);
+    pros::Motor leftBackMotor (leftBackMotor_PORT);
+    pros::Motor rightFrontMotor (rightFrontMotor_PORT);
+    pros::Motor rightMiddleMotor (rightMiddleMotor_PORT);
+    pros::Motor rightBackMotor (rightBackMotor_PORT);
+    pros::delay(10000);
+	  leftFrontMotor.move(-600); // Conners Move
+		leftMiddleMotor.move(-600);
+		leftBackMotor.move(-600);
+		rightFrontMotor.move(600);
+		rightMiddleMotor.move(600);
+		rightBackMotor.move(600);
+    pros::delay(1500); /*
+	  leftFrontMotor.move(0); // Conners Move
+		leftMiddleMotor.move(0);
+		leftBackMotor.move(0);
+		rightFrontMotor.move(0);
+		rightMiddleMotor.move(0);
+		rightBackMotor.move(0);
+    goalMech.set_value(true);
+    pros::delay(250);
+    intake.move(600);
+    pros::delay(3000);
+    intake.move(0); */
+  
+
+
 
 //skills  
 /*
@@ -32,7 +83,7 @@ goalMech.set_value(false);
 dt.move(18); */
                                                                  // RED 
     // GOAL RUSH 
-    
+    /*
     pros::c::imu_set_heading(imu_PORT, 80);
       dt.move(9);
       dt.turn(170);
@@ -40,22 +91,24 @@ dt.move(18); */
       wallMech.move_absolute(500, 200);
       pros::delay(1000);
       wallMech.move_absolute(0,200);
-        pros::delay(1000); 
+        pros::delay(1000); */
       /*
       dt.move(-14);
       pros::delay(500);
       dt.turn(130);
   dt.move(-20);  */ //move back to grab goal  
 /* revised ring rush*/
-/*
+
 pros::c::imu_set_heading(imu_PORT, 80);
-  drive(9,200);
-  turn(170);
-  drive(10,200);
-  wallMech.move_absolute(-500, 200);
-  pros::delay(1000);
-  wallMech.move_absolute(0,200);
-  pros::delay(1000);
+//  drive(9,200);
+//  turn(170);
+//  drive(10,200);
+ //   dt.curve(8,90,true);
+ //   dt.move(6);
+ // wallMech.move_absolute(-500, 200);
+ // pros::delay(1000);
+ // wallMech.move_absolute(0,200);
+/* pros::delay(1000);
   drive(-14,300);
   turn(130);
   drive(-20,450); 
